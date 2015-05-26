@@ -1,5 +1,6 @@
 var Server   = require('./server');
 var Router   = require('./router');
+var routeHandler = require('./handler');
 var url = require('url');
 var path = require('path');
 
@@ -9,9 +10,9 @@ module.exports = function() {
   var app = {};
 
   app._state = {};
-  app._state.projectRoot = path.resolve('.');
+  app._state.projectRoot = path.resolve('./');
   app._state.viewFolder = 'views';
-  app._state.viewLocation =  path.resolve('.' + '/' + app._state.viewFolder);
+  app._state.viewLocation =  path.resolve('./' + app._state.viewFolder + '/');
   app._state.publicFolder = 'public';
 
   app._getState = function() {
@@ -21,26 +22,6 @@ module.exports = function() {
   app.Router = Router;
 
   app._routeHandlers = { };
-
-  /**
-   * app._handleRequest
-   * @param  {String} requestType HTTP request type
-   * @param  {object} request     Node HTTP request object
-   * @param  {object} response    Node HTTP response object
-   * @summary appropriately routes requests
-   */
-  app._handleRequest = function(requestType, request, response) {
-
-    var path = url.parse(request.url).pathname;
-
-    // Ignore favicon requests for now...
-    if (path == '/favicon.ico') return;
-
-    if (app._routeHandlers[path] === undefined) router._handle404(request, response);
-
-    else app._routeHandlers[path].handlers[requestType](request, response);
-
-  };
 
 
   /**
@@ -82,6 +63,7 @@ module.exports = function() {
    */
 
   app.set = function(key, value) {
+    if (!app._state[key]) throw new Error('Cannot configure property: ' + key);
     app._state[key] = value;
   }
 

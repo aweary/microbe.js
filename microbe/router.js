@@ -29,6 +29,10 @@ module.exports = function(baseURL) {
     return this;
   };
 
+  _router._handle404 = function(req, res) {
+    res.end('404 Not Found');
+  }
+
 
   return _router;
 

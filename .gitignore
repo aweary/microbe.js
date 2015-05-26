@@ -3,4 +3,6 @@ node_modules
 Vagrantfile
 .DS_Store
 app.js
+public
+.gitignore
 views
