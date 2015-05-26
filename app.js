@@ -1,15 +1,22 @@
-/* Example implementation of Microbe.js server and router */
+var microbe = require('./microbe');
+var app = microbe();
 
-var server	= require('./microbe/server.js');
-var Router	= require('./microbe/router.js');
+var Router = require('./microbe/router');
 
-var router = new Router('/');
-var server = server(router, 3000);
+var helpRouter = Router('/help');
 
-router.get('/', function(request, response) {
-  response.render('index', {title: Date.now()});
-})
+helpRouter.get(function(req, res){
+  res.render('help', {title: 'It still works!'});
+});
 
-router.get('/help', function(request, response) {
-  response.render('help', {title: 'Help!'});
+
+app.route('/')
+   .get(function(request, response) {
+    response.render('index', {title: 'It works!'});
+  });
+
+app.route('/help', helpRouter);
+
+app.start(3000, function() {
+  console.log('App started on port 3000');
 })

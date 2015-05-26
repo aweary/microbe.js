@@ -2,19 +2,19 @@ var http				= require('http');
 var url					= require('url');
 var responsify	= require('./response');
 
-module.exports = function(router, port) {
+module.exports = function(port, app) {
 
-  var port = typeof port === 'number' ? port : parseInt(port);
-  if (isNaN(port)) throw new Error('Port must be a numerical value');
+  return http.createServer(function(request, response) {
 
-  var server = http.createServer(function(request, response) {
-
+    /* Determine incoming request type */
     var requestType = request.method.toString().toLowerCase();
+
+    /* Augment response object for view rendering */
     responsify(request, response);
-    router._handleRequest(requestType, request, response);
+
+    /* Pass request type to the request handler method of the router */
+    app._handleRequest(requestType, request, response);
 
   });
-
-  server.listen(port, function() { console.log('Listening on port ' + port) });
 
 }

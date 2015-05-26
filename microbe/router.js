@@ -1,38 +1,35 @@
-var url = require('url');
 
-module.exports = function(baseUrl, server) {
+module.exports = function(baseURL) {
 
-  var router = this;
+  var _router = {};
+  _router.baseURL = baseURL;
+  _router.handlers = {};
 
-  router.handlers					= {};
-  router.handlers.get			= {};
-  router.handlers.post		= {};
-  router.handlers.delete	= {};
-  router.handlers.put			= {};
-
-  if (baseUrl === undefined) throw new Error('Base URL required for router');
-  router.baseUrl = baseUrl;
-
-  router._handleRequest = function(requestType, request, response) {
-
-    var path = url.parse(request.url).pathname;
-
-    // Ignore favicon requests for now...
-    if (path == '/favicon.ico') return;
-    if (router.handlers[requestType][path] === undefined) router._handle404(request, response);
-    else router.handlers[requestType][path](request, response);
-
+  /* Handle all GET requests for the router */
+  _router.get = function(handler) {
+    _router.handlers.get = handler;
+    return this;
   };
 
-  router._handle404 = function(request, response) {
-    response.end('404: Page Not Found!');
-  }
+  /* Handle all POST requests for the router */
+  _router.post = function(handler) {
+    _router.handlers.post = handler;
+    return this;
+  };
 
-  router.get = function(url, requestHandler) {
+  /* Handle all PUT requests for the router */
+  _router.put = function(handler) {
+    _router.handlers.put = handler;
+    return this;
+  };
 
-    if (typeof requestHandler !== 'function') throw new Error('Request handler must be a function');
-    else router.handlers.get[url] = requestHandler;
-    
-  }
+  /* Handle all DELETE requests for the router */
+  _router.delete = function(handler) {
+    _router.handlers.delete = handler;
+    return this;
+  };
+
+
+  return _router;
 
 }
