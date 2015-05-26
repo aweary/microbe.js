@@ -1,18 +1,30 @@
 {
   "name": "microbe.js",
-  "version": "0.0.1",
-  "description": "A Node.js framework for shits and giggles",
-  "main": "app.js",
+  "version": "0.1.1",
+  "description": "A small Node.js framework for simple routing",
+  "main": "microbe/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aweary/microbe.js.git"
+  },
+  "keywords": [
+    "Node",
+    "microbe.js",
+    "node",
+    "framework"
+  ],
+  "author": "Brandon Dail <Kierkegaurd@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Aweary/microbe.js/issues"
+  },
+  "homepage": "https://github.com/Aweary/microbe.js",
   "dependencies": {
+    "chalk": "^1.0.0",
     "handlebars": "^3.0.3",
     "oppressor": "0.0.1"
-  },
-  "devDependencies": {
-    "chalk": "^1.0.0"
   }
 }
