@@ -2,3 +2,5 @@ node_modules
 .vagrant
 Vagrantfile
 .DS_Store
+app.js
+views

@@ -10,7 +10,7 @@ module.exports = function(port, app) {
     var requestType = request.method.toString().toLowerCase();
 
     /* Augment response object for view rendering */
-    responsify(request, response);
+    responsify(request, response, app);
 
     /* Pass request type to the request handler method of the router */
     app._handleRequest(requestType, request, response);
