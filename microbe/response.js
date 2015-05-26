@@ -2,6 +2,7 @@ var fs				= require('fs');
 var path			= require('path');
 var oppressor = require('oppressor');
 var Handlify  = require('./handlebars.js');
+var state     = require('./state');
 
 // Add aditional methods to the response object;
 module.exports = function(request, response, app) {
@@ -17,7 +18,7 @@ module.exports = function(request, response, app) {
 
     var handlebars = new Handlify(data || {});
     /* Use app state to get view location */
-    var location = path.resolve(app._state.viewLocation + '/' +  view + '.html');
+    var location = path.resolve(state.viewLocation + '/' + view + '.html');
     /* Open a read stream and pipe it through any transforms */
     var stream = fs.createReadStream(location);
     stream.pipe(handlebars).pipe(oppressor(request)).pipe(this);
@@ -30,7 +31,7 @@ module.exports = function(request, response, app) {
    */
 
   response.static = function(filePath) {
-    var location = path.resolve(app._state.publicFolder + '/' + filePath);
+    var location = path.resolve(state.publicFolder + '/' + filePath);
     var stream = fs.createReadStream(location);
     stream.pipe(this);
   }

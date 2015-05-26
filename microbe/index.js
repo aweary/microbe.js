@@ -1,6 +1,7 @@
 var Server   = require('./server');
 var Router   = require('./router');
 var routeHandler = require('./handler');
+var state = require('./state');
 var url = require('url');
 var path = require('path');
 
@@ -9,16 +10,7 @@ module.exports = function() {
   /* Instantiate the returned object, which will be the app itself */
   var app = {};
 
-  app._state = {};
-  app._state.projectRoot = path.resolve('./');
-  app._state.viewFolder = 'views';
-  app._state.viewLocation =  path.resolve('./' + app._state.viewFolder + '/');
-  app._state.publicFolder = 'public';
-
-  app._getState = function() {
-    return app._state;
-  };
-
+  app._state = state;
   app.Router = Router;
 
   app._routeHandlers = { };
@@ -63,8 +55,9 @@ module.exports = function() {
    */
 
   app.set = function(key, value) {
-    if (!app._state[key]) throw new Error('Cannot configure property: ' + key);
-    app._state[key] = value;
+    if (!state[key]) throw new Error('Cannot configure property: ' + key);
+    state[key] = value;
+    console.log('Index: ', state[key])
   }
 
   /**
