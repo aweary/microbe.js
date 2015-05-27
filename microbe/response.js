@@ -36,7 +36,8 @@ module.exports = function(request, response, app) {
    */
 
   response.static = function(filePath) {
-    var location = path.resolve(state.publicFolder + '/' + filePath);
+
+    var location = path.resolve(state.projectRoot + '/' + state.publicFolder + '/' + filePath);
     var stream = fs.createReadStream(location);
     stream.pipe(this);
   }

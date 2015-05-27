@@ -9,8 +9,6 @@ module.exports = function(port, app) {
 
   return http.createServer(function(request, response) {
 
-    /* Locally load the _middlware array for processing */
-    var middleware = state.middlware;
     /* Augment response object for view rendering */
     responsify(request, response, app);
     /* Augument request object for route handling */

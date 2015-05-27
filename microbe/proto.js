@@ -3,39 +3,41 @@ var Router   = require('./router');
 var routeHandler = require('./handler');
 var state = require('./state');
 var url = require('url');
-var path = require('path');
+var pathRegEx = require('path-to-regexp');
 
 exports = module.exports = proto = {};
 
 /**
  * proto.route
- * @param  {String} baseURL base location for route
+ * @param  {String} path base location for route
  * @param  {Object} router  Microbe router object
  * @summary used to set the routes for the Microbe proto
  */
 
-proto.route = function(baseURL, router) {
+proto.route = function(path, router) {
 
   /* If a function is passed, treat it as a basic GET route */
   if (typeof router === 'function') {
-    var routeObject = Router(baseURL).get(router);
-    this._routeHandlers[baseURL] = routeObject;
+    var routeObject = Router(path).get(router);
+    this._routeHandlers[path] = routeObject;
     return true;
   }
 
   /* If an object is passed, assume it is a Router object */
   else if (typeof router === 'object') {
-    proto._routeHandlers[baseURL] = router;
+    this._routeHandlers[path] = router;
     return true;
   }
+
   /* If no route handler is passed, assume the user wants to chain routes*/
   else if (!router) {
-    var routeObject = Router(baseURL);
-    proto._routeHandlers[baseURL] = routeObject;
+    var routeObject = Router(path);
+    this._routeHandlers[path] = routeObject;
     return routeObject;
   }
 
 };
+
 
 /**
  * proto.register
@@ -61,7 +63,6 @@ proto.register = function(route, handler) {
 proto.set = function(key, value) {
   if (!state[key]) throw new Error('Cannot configure property: ' + key);
   state[key] = value;
-  console.log('Index: ', state[key])
 }
 
 /**
