@@ -1,6 +1,6 @@
 {
   "name": "microbe.js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A small Node.js framework for simple routing",
   "main": "microbe/index.js",
   "scripts": {
