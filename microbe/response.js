@@ -3,6 +3,7 @@ var path			= require('path');
 var oppressor = require('oppressor');
 var Handlify  = require('./handlebars.js');
 var state     = require('./state');
+var test      = require('./utilities/error').try;
 
 // Add aditional methods to the response object;
 module.exports = function(request, response, app) {
@@ -17,6 +18,10 @@ module.exports = function(request, response, app) {
   response.render = function(view, data) {
 
     var handlebars = new Handlify(data || {});
+
+    try { fs.lstatSync(state.viewLocation) }
+    catch (err) { throw new Error('View location not found: ' + state.views + '. Use app.set(\'views\', [view]) to set a custom view location. Otherwise use the \'views\' folder.')};
+
     /* Use app state to get view location */
     var location = path.resolve(state.viewLocation + '/' + view + '.html');
     /* Open a read stream and pipe it through any transforms */

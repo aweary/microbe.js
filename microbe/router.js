@@ -1,4 +1,11 @@
-
+/**
+ * Router
+ * @param  {String} baseURL Base URL for the HTTP path
+ * @return {Objcet} _router Microbe Router object
+ * @summary The Microbe Router is a simple object which contains all
+ *          the route handlers for a given path. It can be used directly,
+ *          or implicitly by using app.route()
+ */
 module.exports = function(baseURL) {
 
   var _router = {};
@@ -31,8 +38,7 @@ module.exports = function(baseURL) {
 
   _router._handle404 = function(req, res) {
     res.end('404 Not Found');
-  }
-
+  };
 
   return _router;
 

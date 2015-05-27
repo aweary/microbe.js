@@ -18,9 +18,11 @@ var _state = {
   get viewLocation() { return path.resolve('./' + this.views + '/')},
 
   /* used to deliver static content */
-  publicFolder: 'public'
+  publicFolder: 'public',
+
+  /* Middlware for custom route handling */
+  middlware: []
 
 };
-
 
 module.exports = _state;
