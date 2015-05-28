@@ -20,7 +20,7 @@ module.exports = function(request, response, app) {
     var handlebars = new Handlify(data || {});
 
     try { fs.lstatSync(state.viewLocation) }
-    catch (err) { throw new Error('View location not found: ' + state.views + '. Use app.set(\'views\', [view]) to set a custom view location. Otherwise use the \'views\' folder.')};
+    catch (err) { console.log(err) };
 
     /* Use app state to get view location */
     var location = path.resolve(state.viewLocation + '/' + view + '.html');
@@ -35,10 +35,36 @@ module.exports = function(request, response, app) {
    * @summary send static files to the client
    */
 
-  response.static = function(filePath) {
+  response.static = function(file) {
 
-    var location = path.resolve(state.projectRoot + '/' + state.publicFolder + '/' + filePath);
-    var stream = fs.createReadStream(location);
-    stream.pipe(this);
+    /* Assume the file actually exists  */
+    var exists = true;
+    /* Get the entire absolute path for the file we want to serve */
+    var location = path.resolve(state.publicPath + file);
+
+    /* Esure that the file really does exists */
+    try { fs.lstatSync(location) } catch (err) { exists = false };
+
+    if (exists) fs.createReadStream(location).pipe(this)
+
+    /* If we can't find the path, we've got some work to do */
+    else {
+
+      var directories = file.split('/');
+      var anchor = directories.indexOf(state.publicFolder);
+
+      for (i = anchor; i < directories.length; i++) {
+
+        var _path = directories.slice(i).join('/');
+        var location = path.resolve(state.publicPath + '/' +  _path);
+
+        if (state.staticPaths.indexOf(location) !== -1) {
+          fs.createReadStream(location).pipe(this);
+        }
+
+      }
+      /* Find the public folder, then reference the cached static files to see where the actual route starts. Re-add the folders to the cached list too to make this easy. Once you find the public folder in the path, go through and join the paths that follow, removing them one my one until it matches a path.*/
+
+    }
   }
 }

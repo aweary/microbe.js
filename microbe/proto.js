@@ -3,9 +3,38 @@ var Router   = require('./router');
 var routeHandler = require('./handler');
 var state = require('./state');
 var url = require('url');
+var fs = require('fs');
+var path = require('path');
 var pathRegEx = require('path-to-regexp');
 
 exports = module.exports = proto = {};
+
+/**
+ * proto._cacheStaticPaths
+ * @param  {String} rootDirectory path to recursively search in
+ * @summary builds an in-memory cache of the existing static files
+ */
+
+proto._cacheStaticPaths = function(rootDirectory) {
+
+  var _this = this;
+
+  fs.readdir(rootDirectory, function(err, data) {
+
+    /* Determine the path and whether its a file or folder */
+    data.forEach(function(file) {
+
+      var location = path.resolve(rootDirectory + '/' + file);
+      var folder = fs.lstatSync(location).isDirectory();
+
+      if (folder) _this._cacheStaticPaths(location)
+      else state.staticPaths.push(location);
+
+    })
+
+  });
+
+}
 
 /**
  * proto.route
@@ -16,8 +45,12 @@ exports = module.exports = proto = {};
 
 proto.route = function(path, router) {
 
+  /* Cache the path no matter what */
+  state.routes.push(path);
+
   /* If a function is passed, treat it as a basic GET route */
   if (typeof router === 'function') {
+
     var routeObject = Router(path).get(router);
     this._routeHandlers[path] = routeObject;
     return true;
@@ -73,6 +106,7 @@ proto.set = function(key, value) {
  */
 proto.start = function(port, callback) {
 
+  this._cacheStaticPaths(state.publicPath);
   proto._server = Server(port, this);
   proto._server.listen(port, callback);
 

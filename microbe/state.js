@@ -21,13 +21,19 @@ var _state = {
   publicFolder: 'public',
 
   /* Getter for publicLocatioin so it can be dynamic */
-  get publicLocation() { return path.resolve('./' + this.publicFolder + '/' )},
+  get publicPath() { return path.resolve('./' + this.publicFolder + '/' )},
 
   /* Middlware for custom route handling */
   middlware: [],
 
   /* Route paramters registered with the app */
-  routeParamters: []
+  routeParamters: [],
+
+  /* Cached static file paths */
+  staticPaths: [],
+
+  /* List of the paths the app will expect */
+  routes: []
 
 };
 

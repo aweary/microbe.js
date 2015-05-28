@@ -11,8 +11,8 @@ module.exports = function(request, response, app) {
 
   /* Handle static requests */
   if (request._staticRequest) {
-
-  }
+    response.static(path);
+  };
 
   Object.keys(routes).forEach(function(route) {
 
@@ -36,14 +36,6 @@ module.exports = function(request, response, app) {
       return true;
     }
 
-    /* If the path isn't matched, it may be a static request */
-    else if (request._staticRequest) {
-
-      fs.readdir(state.publicLocation, function(err, data) {
-         console.log(request._path, data);
-      })
-    }
-
   });
 
-}
+};

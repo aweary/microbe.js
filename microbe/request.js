@@ -5,7 +5,6 @@ module.exports = function(request, response, app) {
 
   /* Attach the path for ease of use in future functions */
   request._path = url.parse(request.url).pathname;
-  console.log(state.routeParamters);
 
   /* Do the same for the request type */
   request._type = request.method.toString().toLowerCase();
