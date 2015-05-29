@@ -4,7 +4,7 @@
   "description": "A small Node.js framework for simple routing",
   "main": "microbe/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha spec"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,8 @@
   },
   "devDependencies": {
     "chai": "^2.3.0",
-    "mocha": "^2.2.5"
+    "coveralls": "^2.11.2",
+    "mocha": "^2.2.5",
+    "mocha-lcov-reporter": "0.0.2"
   }
 }

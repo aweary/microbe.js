@@ -36,6 +36,11 @@ describe('State', function() {
 
     app.route('/', {});
     expect(app._state.routes).to.contain('/');
+  });
+
+  it('should have an empty static routes', function(){
+    expect(app.staticRoutes).to.equal([]);
   })
+
 
 });
