@@ -1,4 +1,5 @@
 node_modules
+coverage
 .vagrant
 Vagrantfile
 .DS_Store
