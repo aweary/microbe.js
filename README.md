@@ -1,4 +1,7 @@
 # microbe.js
+
+[![Join the chat at https://gitter.im/Aweary/microbe.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Aweary/microbe.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A small, easy to use Node.js framework for serving simple websites using the Handlebars template engine.
 
 
@@ -51,6 +54,13 @@ You can also use chaining to attach different HTTP request handlers for a route.
 
 ```
 
+Route parameters are also available on the `req` object via `req.params`. 
+
+```js
+app.route('/article/:id', function(req, res) {
+   res.render('article', { articleID: req.params.id });
+})
+```
 
 ## Rendering
 
