@@ -39,7 +39,8 @@ describe('State', function() {
   });
 
   it('should have an empty static routes', function(){
-    expect(app.staticRoutes).to.equal([]);
+    expect(app._state.staticRoutes).to.be.a('array');
+    expect(app._state.staticRoutes.length).to.equal(0);
   })
 
 
