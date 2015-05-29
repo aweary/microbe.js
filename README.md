@@ -54,6 +54,13 @@ You can also use chaining to attach different HTTP request handlers for a route.
 
 ```
 
+Route parameters are also available on the `req` object via `req.params`. 
+
+```js
+app.route('/article/:id', function(req, res) {
+   res.render('article', { articleID: req.params.id });
+})
+```
 
 ## Rendering
 
