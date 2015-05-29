@@ -1,40 +1,46 @@
 var path = require('path');
 
-/**
- * _state
- * @type {Object}
- * @summary internal state object used globally for app configurations
- */
 
-var _state = {
+
+function State() {
 
   /* Base path for the entire project/server */
-  projectRoot: path.resolve('./'),
+  this.projectRoot = path.resolve('./');
 
   /* Base directory for views */
-  views: 'views',
+  this.views = 'views';
 
-  /* Getter for viewLocation, so it can be dynamic */
-  get viewLocation() { return path.resolve('./' + this.views + '/')},
+  // /* Getter for viewLocation, so it can be dynamic */
+  // get viewLocation() { return path.resolve('./' + this.views + '/')},
 
   /* used to deliver static content */
-  publicFolder: 'public',
+  this.publicFolder = 'public';
 
-  /* Getter for publicLocatioin so it can be dynamic */
-  get publicPath() { return path.resolve('./' + this.publicFolder + '/' )},
+  // /* Getter for publicLocatioin so it can be dynamic */
+  // get publicPath() { return path.resolve('./' + this.publicFolder + '/')},
 
   /* Middlware for custom route handling */
-  middlware: [],
+  this.middleware = [];
 
   /* Route paramters registered with the app */
-  routeParamters: [],
+  this.routeParamters = [];
 
   /* Cached static file paths */
-  staticPaths: [],
+  this.staticRoutes = [];
 
   /* List of the paths the app will expect */
-  routes: []
+  this.routes = [];
 
-};
+}
 
-module.exports = _state;
+/* Define Getters for the dyanically generated publicPath and viewLocation */
+
+Object.__defineGetter__.call(State.prototype, 'publicPath', function() {
+  return path.resolve('./' + this.publicFolder + '/');
+})
+
+Object.__defineGetter__.call(State.prototype, 'viewLocation', function() {
+  return path.resolve('./' + this.views + '/');
+});
+
+module.exports = State;

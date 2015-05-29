@@ -1,5 +1,5 @@
 var proto = require('./proto');
-var state = require('./state');
+var State = require('./state');
 
 module.exports = function() {
 
@@ -9,8 +9,7 @@ module.exports = function() {
   /* Inherit from the proto.js object */
   app.__proto__ = proto;
 
-  /* Localize the globally accessbile state object */
-  app._state = state;
+  app._state = new State();
 
   /* Instantiate the route handler cache */
   app._routeHandlers = { };

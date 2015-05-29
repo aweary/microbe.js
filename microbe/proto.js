@@ -1,13 +1,15 @@
 var Server   = require('./server');
 var Router   = require('./router');
 var routeHandler = require('./handler');
-var state = require('./state');
+var State = require('./state');
 var url = require('url');
 var fs = require('fs');
 var path = require('path');
 var pathRegEx = require('path-to-regexp');
 
 exports = module.exports = proto = {};
+
+proto._state = new State();
 
 /**
  * proto._cacheStaticPaths
@@ -28,7 +30,7 @@ proto._cacheStaticPaths = function(rootDirectory) {
       var folder = fs.lstatSync(location).isDirectory();
 
       if (folder) _this._cacheStaticPaths(location)
-      else state.staticPaths.push(location);
+      else _this._state.staticRoutes.push(location);
 
     })
 
@@ -46,7 +48,7 @@ proto._cacheStaticPaths = function(rootDirectory) {
 proto.route = function(path, router) {
 
   /* Cache the path no matter what */
-  state.routes.push(path);
+  this._state.routes.push(path);
 
   /* If a function is passed, treat it as a basic GET route */
   if (typeof router === 'function') {
@@ -94,8 +96,8 @@ proto.register = function(route, handler) {
  */
 
 proto.set = function(key, value) {
-  if (!state[key]) throw new Error('Cannot configure property: ' + key);
-  state[key] = value;
+  if (!this._state[key]) throw new Error('Cannot configure property: ' + key);
+  this._state[key] = value;
 }
 
 /**
@@ -106,7 +108,7 @@ proto.set = function(key, value) {
  */
 proto.start = function(port, callback) {
 
-  this._cacheStaticPaths(state.publicPath);
+  this._cacheStaticPaths(this._state.publicPath);
   proto._server = Server(port, this);
   proto._server.listen(port, callback);
 

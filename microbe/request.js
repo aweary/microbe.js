@@ -1,5 +1,4 @@
 var url = require('url');
-var state = require('./state');
 
 module.exports = function(request, response, app) {
 

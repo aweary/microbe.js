@@ -1,5 +1,4 @@
 var paramify = require('./params');
-var state = require('./state');
 var fs = require('fs');
 
 module.exports = function(request, response, app) {
@@ -26,8 +25,8 @@ module.exports = function(request, response, app) {
       var params = router.matchPath.exec(path);
 
       /* Cache the params if they're not already cached */
-      if (state.routeParamters.indexOf(params[0]) === -1) {
-        state.routeParamters.push(params[0]);
+      if (app._state.routeParamters.indexOf(params[0]) === -1) {
+        app._state.routeParamters.push(params[0]);
       }
 
       paramify(router, request, params);

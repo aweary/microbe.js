@@ -3,7 +3,6 @@ var url					= require('url');
 var responsify	= require('./response');
 var requestify  = require('./request');
 var routeHandler = require('./handler');
-var state = require('./state')
 
 module.exports = function(port, app) {
 

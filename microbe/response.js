@@ -19,11 +19,11 @@ module.exports = function(request, response, app) {
 
     var handlebars = new Handlify(data || {});
 
-    try { fs.lstatSync(state.viewLocation) }
+    try { fs.lstatSync(app._state.viewLocation) }
     catch (err) { console.log(err) };
 
     /* Use app state to get view location */
-    var location = path.resolve(state.viewLocation + '/' + view + '.html');
+    var location = path.resolve(app._state.viewLocation + '/' + view + '.html');
     /* Open a read stream and pipe it through any transforms */
     var stream = fs.createReadStream(location);
     stream.pipe(handlebars).pipe(oppressor(request)).pipe(this);
@@ -40,7 +40,7 @@ module.exports = function(request, response, app) {
     /* Assume the file actually exists  */
     var exists = true;
     /* Get the entire absolute path for the file we want to serve */
-    var location = path.resolve(state.publicPath + file);
+    var location = path.resolve(app._state.publicPath + file);
 
     /* Esure that the file really does exists */
     try { fs.lstatSync(location) } catch (err) { exists = false };
@@ -50,20 +50,24 @@ module.exports = function(request, response, app) {
     /* If we can't find the path, we've got some work to do */
     else {
 
+      /* Split the path into an array containing each directory/file */
       var directories = file.split('/');
-      var anchor = directories.indexOf(state.publicFolder);
+      /* Find where the public folder is and make it the anchor point */
+      var anchor = directories.indexOf(app._state.publicFolder);
 
+      /* Try joining the paths, removing one directory on each iteration */
       for (i = anchor; i < directories.length; i++) {
 
         var _path = directories.slice(i).join('/');
-        var location = path.resolve(state.publicPath + '/' +  _path);
+        var location = path.resolve(app._state.publicPath + '/' +  _path);
 
-        if (state.staticPaths.indexOf(location) !== -1) {
+        /* If the path matches a cached route, stream it to the user */
+        if (app._state.staticRoutes.indexOf(location) !== -1) {
           fs.createReadStream(location).pipe(this);
         }
 
       }
-      /* Find the public folder, then reference the cached static files to see where the actual route starts. Re-add the folders to the cached list too to make this easy. Once you find the public folder in the path, go through and join the paths that follow, removing them one my one until it matches a path.*/
+
 
     }
   }
