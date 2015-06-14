@@ -9,10 +9,8 @@ module.exports = function() {
   /* Inherit from the proto.js object */
   app.__proto__ = proto;
 
-  app._state = new State();
-
-  /* Instantiate the route handler cache */
-  app._routeHandlers = { };
+  /* Instantiate the state */
+  app.state = new State();
 
   return app;
 

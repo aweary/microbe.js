@@ -1,8 +1,6 @@
 var handlebars = require('handlebars');
-var stream = require('stream');
 var util = require('util');
-
-var Transform = stream.Transform;
+var Transform = require('stream').Transform;
 
 /* Stream transform for Handlebar templating */
 function Handlify(data) {

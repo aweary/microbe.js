@@ -5,11 +5,11 @@ var State = require('./state');
 var url = require('url');
 var fs = require('fs');
 var path = require('path');
+var err = require('./utilities/error');
 var pathRegEx = require('path-to-regexp');
 
 exports = module.exports = proto = {};
 
-proto._state = new State();
 
 /**
  * proto._cacheStaticPaths
@@ -30,7 +30,7 @@ proto._cacheStaticPaths = function(rootDirectory) {
       var folder = fs.lstatSync(location).isDirectory();
 
       if (folder) _this._cacheStaticPaths(location)
-      else _this._state.staticRoutes.push(location);
+      else _this.state.staticRoutes.push(location);
 
     })
 
@@ -48,44 +48,44 @@ proto._cacheStaticPaths = function(rootDirectory) {
 proto.route = function(path, router) {
 
   /* Cache the path no matter what */
-  this._state.routes.push(path);
+  this.state.routes.push(path);
 
   /* If a function is passed, treat it as a basic GET route */
   if (typeof router === 'function') {
 
     var routeObject = Router(path).get(router);
-    this._routeHandlers[path] = routeObject;
+    this.state.routers[path] = routeObject;
     return true;
   }
 
   /* If an object is passed, assume it is a Router object */
   else if (typeof router === 'object') {
-    this._routeHandlers[path] = router;
+    this.state.routers[path] = router;
     return true;
   }
 
   /* If no route handler is passed, assume the user wants to chain routes*/
   else if (!router) {
     var routeObject = Router(path);
-    this._routeHandlers[path] = routeObject;
+    this.state.routers[path] = routeObject;
     return routeObject;
   }
 
 };
 
-
 /**
- * proto.register
- * @param  {Function} callback middleware function
- * @param  {Function} next     control flow callback
- * @summary register middleware functions for routes. Middlware should be
- *          declared in the order it will be executed.
+ * proto.use
+ * @param  {String} route      route for the middleware
+ * @param  {Function} middleware actual middleware handler
+ * @summary registers middleware with the microbe.js app
  */
+proto.use = function(route, middleware) {
+  if (this.state.routes.indexOf(route) === -1) err.middleware(route);
+  this.state.middleware.push(middleware);
+}
 
-proto.register = function(route, handler) {
-  /* If no path is provided, register the middlware for all routes */
 
-};
+
 
 /**
  * proto.set
@@ -96,8 +96,8 @@ proto.register = function(route, handler) {
  */
 
 proto.set = function(key, value) {
-  if (!this._state[key]) throw new Error('Cannot configure property: ' + key);
-  this._state[key] = value;
+  if (!this.state[key]) throw new Error('Cannot configure property: ' + key);
+  this.state[key] = value;
 }
 
 /**
@@ -108,7 +108,7 @@ proto.set = function(key, value) {
  */
 proto.start = function(port, callback) {
 
-  this._cacheStaticPaths(this._state.publicPath);
+  this._cacheStaticPaths(this.state.publicPath);
   proto._server = Server(port, this);
   proto._server.listen(port, callback);
 

@@ -1,7 +1,5 @@
 var path = require('path');
 
-
-
 function State() {
 
   /* Base path for the entire project/server */
@@ -10,14 +8,8 @@ function State() {
   /* Base directory for views */
   this.views = 'views';
 
-  // /* Getter for viewLocation, so it can be dynamic */
-  // get viewLocation() { return path.resolve('./' + this.views + '/')},
-
   /* used to deliver static content */
   this.publicFolder = 'public';
-
-  // /* Getter for publicLocatioin so it can be dynamic */
-  // get publicPath() { return path.resolve('./' + this.publicFolder + '/')},
 
   /* Middlware for custom route handling */
   this.middleware = [];
@@ -30,6 +22,9 @@ function State() {
 
   /* List of the paths the app will expect */
   this.routes = [];
+
+  /* Cache for all the actual router objects */
+  this.routers = {};
 
 }
 

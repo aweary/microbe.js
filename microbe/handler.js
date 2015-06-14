@@ -3,20 +3,21 @@ var fs = require('fs');
 
 module.exports = function(request, response, app) {
 
-  var routes = app._routeHandlers;
-  var path = request._path;
-  var type = request._type;
-  var found = false;
+  var routers = app.state.routers;
+  var path   = request.path;
+  var type   = request.type;
+  var found  = false;
 
   /* Handle static requests */
-  if (request._staticRequest) {
+  if (request.staticRequest) {
     response.static(path);
   };
 
-  Object.keys(routes).forEach(function(route) {
+
+  Object.keys(routers).forEach(function(route) {
 
     /* Get the Router object itself */
-    var router = routes[route];
+    var router = routers[route];
 
     /* If the path matches the route's pattern, handle the request */
     if (router.matchPath.test(path)) {
@@ -25,11 +26,20 @@ module.exports = function(request, response, app) {
       var params = router.matchPath.exec(path);
 
       /* Cache the params if they're not already cached */
-      if (app._state.routeParamters.indexOf(params[0]) === -1) {
-        app._state.routeParamters.push(params[0]);
+      if (app.state.routeParamters.indexOf(params[0]) === -1) {
+        app.state.routeParamters.push(params[0]);
       }
 
       paramify(router, request, params);
+
+      /* Handle any declared middlware */
+
+      if (app.state.middleware.length) {
+        app.state.middleware.forEach(function(handler) {
+        handler(request, response);
+      });
+
+      }
       /* Handle the actual request now */
       router.handlers[type](request, response);
       return true;
