@@ -20,6 +20,9 @@ function State() {
   /* Cached static file paths */
   this.staticRoutes = [];
 
+  /* key-value store for the cached absolute path and requested path */
+  this.staticRouteCache  = {};
+
   /* List of the paths the app will expect */
   this.routes = [];
 

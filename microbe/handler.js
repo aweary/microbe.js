@@ -13,7 +13,6 @@ module.exports = function(request, response, app) {
     response.static(path);
   };
 
-
   Object.keys(routers).forEach(function(route) {
 
     /* Get the Router object itself */

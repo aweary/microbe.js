@@ -39,16 +39,25 @@ module.exports = function(request, response, app) {
 
   response.static = function(file) {
 
-    console.log('Sending static file...');
+    console.log(app.state.staticRouteCache);
+
     /* Assume the file actually exists  */
     var exists = true;
+
     /* Get the entire absolute path for the file we want to serve */
-    var location = path.resolve(app.state.publicPath + file);
+    var relativePath = path.resolve(app.state.publicPath + file);
+
+    /* If the path has been cached already, create a read stream and pipe it */
+    if (app.state.staticRouteCache[relativePath]) {
+      var location = app.state.staticRouteCache[relativePath];
+      fs.createReadStream(location).pipe(this);
+      return;
+    }
 
     /* Esure that the file really does exists */
-    try { fs.lstatSync(location) } catch (err) { exists = false };
+    try { fs.lstatSync(relativePath) } catch (err) { exists = false };
 
-    if (exists) fs.createReadStream(location).pipe(this)
+    if (exists) fs.createReadStream(relativePath).pipe(this)
 
     /* If we can't find the path, we've got some work to do */
     else {
@@ -66,6 +75,7 @@ module.exports = function(request, response, app) {
 
         /* If the path matches a cached route, stream it to the user */
         if (app.state.staticRoutes.indexOf(location) !== -1) {
+          app.state.staticRouteCache[relativePath] = location;
           fs.createReadStream(location).pipe(this);
         }
       }

@@ -14,14 +14,18 @@ exports = module.exports = proto = {};
 /**
  * proto._cacheStaticPaths
  * @param  {String} rootDirectory path to recursively search in
- * @summary builds an in-memory cache of the existing static files
+ * @summary builds an in-memory cache of the existing static files.
+ *          It recursively climbs the decalured static resource folder
+ *          and builds a cache of all the file paths.
  */
 
 proto._cacheStaticPaths = function(rootDirectory) {
 
   var _this = this;
 
+  if (err) throw new Error('Public directory either not found or inaccessible');
   fs.readdir(rootDirectory, function(err, data) {
+
 
     /* Determine the path and whether its a file or folder */
     data.forEach(function(file) {
@@ -110,6 +114,6 @@ proto.start = function(port, callback) {
 
   this._cacheStaticPaths(this.state.publicPath);
   proto._server = Server(port, this);
-  proto._server.listen(port, callback);
+  proto._server.listen(port, callback(proto._server));
 
 }

@@ -1,5 +1,4 @@
 var http				= require('http');
-var url					= require('url');
 var responsify	= require('./response');
 var requestify  = require('./request');
 var routeHandler = require('./handler');
