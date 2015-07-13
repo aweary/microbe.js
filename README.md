@@ -54,7 +54,7 @@ You can also use chaining to attach different HTTP request handlers for a route.
 
 ```
 
-Route parameters are also available on the `req` object via `req.params`. 
+Route parameters are also available on the `req` object via `req.params`.
 
 ```js
 app.route('/article/:id', function(req, res) {
@@ -69,4 +69,40 @@ Microbe uses handlebars for rendering. Place your views in a `views` folder and 
 
 ```js
   res.render('about', {time: Date.now()});
+```
+
+Microbe can also render or serve other types of content. For example, you can use the `res.json` method to simple send a JSON object, which makes APIs very easy to implement.
+
+```js
+  app.route('/api/:user', function(req, res) {
+    var user = req.params.user;
+    /* query is just a dummy function, meant to represent some actual query you might make to a database or other data store */
+    var details = query(user);
+    res.json(details);
+  })
+```
+
+## Middlware
+
+Middleware is added to a route using the `app.use` method. The first argument is the route for which the middleware should be invoked. If no route is provided, then it will be used on all routes.
+
+```js
+
+  app.use('/api', function(req, res){
+    console.log('API request has been received!');
+  })
+
+```
+
+
+## State and configurations
+
+If you need to configure your `Microbe.js` application, you can use the `app.set` method for adjusting values in the internal state object. Currently, the only two properties you should really be setting yourself are the 'views' nad 'publicFolder' which, as expected, determine where `Microbe.js` will look for your views and static files, respectively.
+
+```js
+  /* this defaults to 'views' */
+  app.set('views', 'templates')
+
+  /* this defaults to 'public'*/
+  app.set('publicFolder', 'client');
 ```

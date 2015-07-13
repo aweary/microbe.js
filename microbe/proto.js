@@ -104,6 +104,7 @@ proto.set = function(key, value) {
   this.state[key] = value;
 }
 
+
 /**
  * proto.start
  * @param  {Number}   port     HTTP Port for server
