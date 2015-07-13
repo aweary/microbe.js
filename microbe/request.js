@@ -8,7 +8,7 @@ module.exports = function(request, response, app) {
   /* Do the same for the request type */
   request.type = request.method.toString().toLowerCase();
 
-  var staticMatch = /\.(css|js|png|jpg|svg|pdf)$/;
+  var staticMatch = /\.(css|js|png|gif|txt|ico|xml|rss|jpeg|jpg|svg|pdf)$/;
 
   /* Attach a _staticRequest property to requests identified as static */
   if (staticMatch.test(request.path)) {

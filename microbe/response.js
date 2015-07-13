@@ -17,11 +17,10 @@ module.exports = function(request, response, app) {
 
   response.render = function(view, data) {
 
-    console.log('Rendering %j with data %j', view, data);
     var handlebars = new Handlify(data || {});
 
     try { fs.lstatSync(app.state.viewLocation) }
-    catch (err) { console.log(err) };
+    catch (err) {  };
 
     /* Use app state to get view location */
     var location = path.resolve(app.state.viewLocation + '/' + view + '.html');
@@ -38,8 +37,6 @@ module.exports = function(request, response, app) {
    */
 
   response.static = function(file) {
-
-    console.log(app.state.staticRouteCache);
 
     /* Assume the file actually exists  */
     var exists = true;
@@ -84,6 +81,7 @@ module.exports = function(request, response, app) {
 
   response.json = function(json) {
     if (typeof json === 'object') json = JSON.stringify(json);
+    this.end(json);
   };
 
 

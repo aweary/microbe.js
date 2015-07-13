@@ -22,10 +22,9 @@ exports = module.exports = proto = {};
 proto._cacheStaticPaths = function(rootDirectory) {
 
   var _this = this;
-
-  if (err) throw new Error('Public directory either not found or inaccessible');
   fs.readdir(rootDirectory, function(err, data) {
 
+    if (err) throw new Error('Public directory either not found or inaccessible');
 
     /* Determine the path and whether its a file or folder */
     data.forEach(function(file) {
@@ -84,9 +83,10 @@ proto.route = function(path, router) {
  * @summary registers middleware with the microbe.js app
  */
 proto.use = function(route, middleware) {
-  if (this.state.routes.indexOf(route) === -1) err.middleware(route);
-  this.state.middleware.push(middleware);
+  if (!middleware) route = '*';
+  this.state.middleware.push({route: route, handler: middleware});
 }
+
 
 
 
@@ -113,6 +113,7 @@ proto.set = function(key, value) {
 proto.start = function(port, callback) {
 
   this._cacheStaticPaths(this.state.publicPath);
+  this.port = port;
   proto._server = Server(port, this);
   proto._server.listen(port, callback(proto._server));
 

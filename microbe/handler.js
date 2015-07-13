@@ -34,9 +34,11 @@ module.exports = function(request, response, app) {
       /* Handle any declared middlware */
 
       if (app.state.middleware.length) {
-        app.state.middleware.forEach(function(handler) {
-        handler(request, response);
-      });
+        app.state.middleware.forEach(function(middleware) {
+          var handler = middleware.handler;
+          var route = middleware.route;
+          if (route === path || route === '*') handler(request, response);
+        });
 
       }
       /* Handle the actual request now */
