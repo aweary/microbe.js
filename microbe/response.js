@@ -42,7 +42,7 @@ module.exports = function(request, response, app) {
     var exists = true;
 
     /* Get the entire absolute path for the file we want to serve */
-    var relativePath = path.resolve(app.state.publicPath + file);
+    var relativePath = path.resolve(app.state.publicPath + '/' + file);
 
     /* If the path has been cached already, create a read stream and pipe it */
     if (app.state.staticRouteCache[relativePath]) {
