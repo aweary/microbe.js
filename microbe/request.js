@@ -1,18 +1,16 @@
-var url = require('url');
+var url = require('url')
+var debug = require('debug')('request')
 
 module.exports = function(request, response, app) {
 
-  /* Attach the path for ease of use in future functions */
-  request.path = url.parse(request.url).pathname;
+  debug('requested url: %o', request.url)
 
-  /* Do the same for the request type */
-  request.type = request.method.toString().toLowerCase();
+  request.path = url.parse(request.url).pathname
+  request.type = request.method.toString().toLowerCase()
+  var staticMatch = /\.(css|js|png|gif|txt|ico|xml|rss|jpeg|jpg|svg|pdf)$/
 
-  var staticMatch = /\.(css|js|png|gif|txt|ico|xml|rss|jpeg|jpg|svg|pdf)$/;
-
-  /* Attach a _staticRequest property to requests identified as static */
   if (staticMatch.test(request.path)) {
-    request.staticRequest = true;
+    request.staticRequest = true
   }
 
 }

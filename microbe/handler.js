@@ -1,51 +1,61 @@
-var paramify = require('./params');
-var fs = require('fs');
+var paramify = require('./params')
+var debug = require('debug')('handler')
+var fs = require('fs')
+var final = require('finalhandler')
 
 module.exports = function(request, response, app) {
 
-  var routers = app.state.routers;
-  var path   = request.path;
-  var type   = request.type;
-  var found  = false;
+  var routers = app.state.routers
+  var done = final(request, response)
+  var stack = app.state.middleware
+  var path   = request.path
+  var type   = request.type
+  var found  = false
+  var matched = false
+
 
   /* Handle static requests */
   if (request.staticRequest) {
-    response.static(path);
-  };
+    response.static(path)
+    debug('Rendering static file: %o', path)
+    return
+  }
+
+  debug('Requested view: %o', path)
 
   Object.keys(routers).forEach(function(route) {
 
-    /* Get the Router object itself */
-    var router = routers[route];
+    var router = routers[route]
 
-    /* If the path matches the route's pattern, handle the request */
     if (router.matchPath.test(path)) {
 
-      /* Pass the router, request, and parameters off to parse them */
-      var params = router.matchPath.exec(path);
+      matched = true
+
+      var params = router.matchPath.exec(path)
 
       /* Cache the params if they're not already cached */
       if (app.state.routeParamters.indexOf(params[0]) === -1) {
-        app.state.routeParamters.push(params[0]);
+        app.state.routeParamters.push(params[0])
       }
 
-      paramify(router, request, params);
+      paramify(router, request, params)
 
-      /* Handle any declared middlware */
 
-      if (app.state.middleware.length) {
-        app.state.middleware.forEach(function(middleware) {
-          var handler = middleware.handler;
-          var route = middleware.route;
-          if (route === path || route === '*') handler(request, response);
-        });
+      if (stack.length) {
+        stack.forEach(function(middleware) {
+          var handler = middleware.handler
+          var route = middleware.route
+          if (route === path || route === '*') handler(request, response)
+        })
 
       }
       /* Handle the actual request now */
-      router.handlers[type](request, response);
-      return true;
+      router.handlers[type](request, response)
+      return true
     }
 
-  });
+  })
 
-};
+  if (!matched) done(matched)
+
+}
