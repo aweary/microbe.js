@@ -19,7 +19,7 @@ Below is a basic example with only one route.
 
 ```js
 
-var Microbe.js = require('microbe.js')
+var microbe = require('microbe.js')
 var app = microbe({engine: 'handlebars'})
 
 app.route('/', function(req, res){
@@ -70,7 +70,7 @@ You can do so when you instantiate the app:
 
 ```js
 
-var Microbe.js  = require('microbe')
+var microbe  = require('microbe')
 var app = microbe({
   engine: 'handlebars'
 })
@@ -80,7 +80,7 @@ var app = microbe({
 Or you may do so using the `app.set` method:
 
 ```js
-var Microbe.js = require('microbe')
+var microbe = require('microbe')
 var app = microbe()
 app.set('engine', 'jade')
 ```

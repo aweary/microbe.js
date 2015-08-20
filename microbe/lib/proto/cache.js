@@ -1,7 +1,7 @@
 import bugger from 'debug'
 import fs from 'fs'
 import path from 'path'
-import err from '../../util/error'
+import error from '../../util/error'
 import { isFolder } from '../../util.helpers'
 
 const debug = bugger('app:cache')
@@ -23,7 +23,7 @@ export default function(root) {
 
   fs.readdir(root, (err, files) => {
 
-    if (err) err('missing', root)
+    if (err) error('missing', root)
 
     files.forEach(file => {
 
