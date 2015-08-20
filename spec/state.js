@@ -2,7 +2,7 @@ var expect = require('chai').expect
 
 describe('State', function() {
 
-  var microbe = require('../microbe/index')
+  var microbe = require('../dist/index')
   var app
 
   beforeEach(function(done) {

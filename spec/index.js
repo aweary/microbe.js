@@ -1,5 +1,5 @@
 var expect = require('chai').expect
-var microbe = require('../microbe/index')
+var microbe = require('../dist/index')
 
 describe('Microbe constructor', function() {
 
@@ -19,7 +19,7 @@ describe('Microbe constructor', function() {
   })
 
   it('should inherit from proto.js', function() {
-    var proto = require('../microbe/proto')
+    var proto = require('../dist/proto')
     expect(app.__proto__).to.equal(proto)
   })
 
