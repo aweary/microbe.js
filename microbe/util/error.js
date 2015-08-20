@@ -1,19 +1,13 @@
-var chalk = require('chalk')
+import chalk from 'chalk'
 
-exports.middleware = function(route) {
-  var err = 'Cannot set middleware for route "' + route + '": route not defined'
-  var result = chalk.black.bgRed.bold(err)
-  throw new Error(result)
-}
+export default function(type, data) {
 
-exports.missing = function(path) {
-  var err = 'Unable to locate file/folder: "' + path + '": path not found'
-  var result = chalk.black.bgRed.bold(err)
-  throw new Error(result)
-}
+  var errors = {
+    missing: `Unable to locate file/folder ${data}:  path not found`,
+    engine: `Render called before render engine was set`,
+    middleware: `Cannot set middleware for route ${data}: route not defined`
+  }
 
-exports.engine = function() {
-  var err = 'Render called before render engine was set'
-  var result = chalk.red.bold(err)
-  throw new Error(result)
+  throw new Error(chalk.red.bold(errors[type]))
+
 }

@@ -1,7 +1,10 @@
-var fs = require('fs')
-var path = require('path')
-var debug = require('debug')('helpers')
-var mime = require('mime')
+import fs from 'fs'
+import path from 'path'
+import bugger from 'debug'
+import mime from 'mime'
+
+const debug = bugger('helpers')
+
 
 
 /**
@@ -11,7 +14,7 @@ var mime = require('mime')
  * @return {Boolean} whether it exists
  */
 
-exports.inArray = function inArray(array, value) {
+export function inArray(array, value) {
   return array.indexOf(value) !== -1
 }
 
@@ -25,18 +28,18 @@ exports.inArray = function inArray(array, value) {
  * @param {Function} done finalhandler instance
  */
 
-exports.serve = function(response, done) {
+export function serve(response, done) {
 
   return function(location, err, readFile) {
 
     if (err) return done(false)
-    var type = mime.lookup(location)
+    let type = mime.lookup(location)
 
     if (readFile === false) {
       return response.end(location)
     }
 
-    fs.readFile(location, function(err, data) {
+    fs.readFile(location, (err, data) => {
       if (err) done(err)
       response.setHeader('Content-Type', type)
       response.setHeader('Content-Length', Buffer.byteLength(data))
@@ -54,7 +57,7 @@ exports.serve = function(response, done) {
  * @return {Function} required instance
  */
 
-exports.lib = function(folder, file) {
+export function lib(folder, file) {
   return require(path.join('../lib', folder, file + '.js'))
 }
 
@@ -65,6 +68,6 @@ exports.lib = function(folder, file) {
  * @return {Boolean} is/isn't a folder
  */
 
-exports.isFolder = function(path) {
+export function isFolder(path) {
   return fs.lstatSync(path).isDirectory()
 }

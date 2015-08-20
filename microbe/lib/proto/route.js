@@ -1,5 +1,7 @@
-var Router = require('../../router.js')
-var debug = require('debug')('app:route')
+import Router from '../../router.js'
+import bugger from 'debug'
+
+const debug = bugger('app:route')
 
 /**
  * proto.route
@@ -8,7 +10,7 @@ var debug = require('debug')('app:route')
  * @summary used to set the routes for the Microbe proto
  */
 
-module.exports = function(path, router) {
+export default function(path, router) {
 
   /* Cache the path no matter what */
   this.state.routes.push(path)
@@ -17,7 +19,7 @@ module.exports = function(path, router) {
   /* If a function is passed, treat it as a basic GET route */
   if (typeof router === 'function') {
 
-    var routeObject = Router(path).get(router)
+    let routeObject = Router(path).get(router)
     this.state.routers[path] = routeObject
     return true
   }
@@ -30,7 +32,7 @@ module.exports = function(path, router) {
 
   /* If no route handler is passed, assume the user wants to chain routes*/
   else if (!router) {
-    var routeObject = Router(path)
+    let routeObject = Router(path)
     this.state.routers[path] = routeObject
     return routeObject
   }

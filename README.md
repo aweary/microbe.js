@@ -1,20 +1,17 @@
-# microbe.js
+# Microbe.js
 
 [![Join the chat at https://gitter.im/Aweary/microbe.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Aweary/microbe.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  [![Build Status](https://travis-ci.org/Aweary/microbe.js.svg?branch=master)](https://travis-ci.org/Aweary/microbe.js)
 
 A small, easy to use Node.js framework for serving simple websites using the Handlebars template engine.
 
 
-# Install
-
-Microbe.js is available via the NPM registry.
+# Installation
 
 ``` npm install microbe.js```
 
 
 # Usage
 
-## General
 
 Microbe.js acts very similarly to Express.js in that you require the main package and instantiate your application by invoking it as a function.
 
@@ -22,7 +19,7 @@ Below is a basic example with only one route.
 
 ```js
 
-var microbe = require('microbe.js')
+var Microbe.js = require('microbe.js')
 var app = microbe({engine: 'handlebars'})
 
 app.route('/', function(req, res){
@@ -65,7 +62,7 @@ app.route('/article/:id', function(req, res) {
 ## Rendering
 
 
-Microbe implements `consolidate.js` which means you can use any of the supported engines. [Check their repo](https://github.com/tj/consolidate.js) for a comprehensive list.
+Microbe.js implements `consolidate.js` which means you can use any of the supported engines. [Check their repo](https://github.com/tj/consolidate.js) for a comprehensive list.
 
 You have to set a rendering engine if you're going to be using the `res.render` method, otherwise an error will be thrown.
 
@@ -73,7 +70,7 @@ You can do so when you instantiate the app:
 
 ```js
 
-var microbe = require('microbe')
+var Microbe.js  = require('microbe')
 var app = microbe({
   engine: 'handlebars'
 })
@@ -83,12 +80,12 @@ var app = microbe({
 Or you may do so using the `app.set` method:
 
 ```js
-var microbe = require('microbe')
+var Microbe.js = require('microbe')
 var app = microbe()
 app.set('engine', 'jade')
 ```
 
-Microbe will assume that your file extensions will be the same as the engine's name (e.g., `handlebars` uses `[name].handlebars`, `jade` uses `[name].jade`, etc.). If you need to use a different extension then set the `ext` value as well.
+Microbe.js will assume that your file extensions will be the same as the engine's name (e.g., `handlebars` uses `[name].handlebars`, `jade` uses `[name].jade`, etc.). If you need to use a different extension then set the `ext` value as well.
 
 ```js
 var app = microbe({

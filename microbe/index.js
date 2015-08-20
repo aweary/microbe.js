@@ -1,12 +1,12 @@
-var proto = require('./proto')
-var State = require('./state')
-var merge = require('merge')
+import proto from './proto'
+import State from './state'
+import merge from 'merge'
 
 
-module.exports = function(opts) {
+export default function(opts) {
 
-  var app = Object.create(proto)
-  var state = new State()
+  const app = Object.create(proto)
+  let state = new State()
   app.state = merge(state, opts)
 
   return app

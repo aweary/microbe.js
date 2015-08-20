@@ -1,19 +1,20 @@
-var http				= require('http')
+import http from 'http'
+import responsify from './response'
+import requestify from './request'
+import handler from './handler'
 
-var responsify	= require('./response')
-var requestify  = require('./request')
-var routeHandler = require('./handler')
 
-module.exports = function(port, app) {
 
-  return http.createServer(function(request, response) {
+export default function(port, app) {
+
+  return http.createServer((request, response) => {
 
     /* Augment response object for view rendering */
     responsify(request, response, app)
     /* Augument request object for route handling */
     requestify(request, response, app)
     /* Pass off request and response for route handling */
-    routeHandler(request, response, app)
+    handler(request, response, app)
 
   })
 

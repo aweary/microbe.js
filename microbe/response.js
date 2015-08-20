@@ -1,15 +1,16 @@
-var path = require('path')
-var final = require('finalhandler')
-var cons = require('consolidate')
-var state = require('./state')
-var debug = require('debug')('response')
-var serve = require('./util/helpers').serve
-var lib = require('./util/helpers').lib
+import path from 'path'
+import final from 'finalhandler'
+import cons from 'consolidate'
+import state from './state'
+import bugger from 'debug'
+import { serve, lib } from './util/helpers'
 
-module.exports = function(request, response, app) {
+const debug = bugger('response')
 
-  var done = final(request, response)
-  var send = serve(response, done)
+export default function(request, response, app) {
+
+  const done = final(request, response)
+  const send = serve(response, done)
 
   response.render = lib('response', 'render')(app, send)
   response.static = lib('response', 'static')(app, send)

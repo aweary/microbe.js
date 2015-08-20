@@ -1,4 +1,5 @@
-var debug = require('debug')('app:middlware')
+import bugger from 'debug'
+const debug = bugger('app:middlware')
 
 
 /**
@@ -7,9 +8,9 @@ var debug = require('debug')('app:middlware')
  * @param  {Function} handler actual middleware handler
  */
 
-module.exports = function(route, handler) {
+export default function(route, handler) {
 
-  var stack = this.state.middleware
+  let stack = this.state.middleware
 
   handler === undefined
       ? stack.push({route: '*', handler: route})

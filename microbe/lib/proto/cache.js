@@ -1,8 +1,10 @@
-var debug = require('debug')('app:cache')
-var fs = require('fs')
-var path = require('path')
-var err = require('../../util/error')
-var isFolder = require('../../util/helpers').isFolder
+import bugger from 'debug'
+import fs from 'fs'
+import path from 'path'
+import err from '../../util/error'
+import { isFolder } from '../../util.helpers'
+
+const debug = bugger('app:cache')
 
 /**
  * builds an in-memory cache of the existing static files.
@@ -12,20 +14,21 @@ var isFolder = require('../../util/helpers').isFolder
  */
 
 
-module.exports = function(root) {
+export default function(root) {
 
-  var self = this
-  var routes = this.state.staticRoutes
+  const self = this
+  const routes = this.state.staticRoutes
 
   debug('Caching static paths for %o', root)
 
-  fs.readdir(root, function(err, files) {
+  fs.readdir(root, (err, files) => {
 
-    if (err) err.missing(root)
+    if (err) err('missing', root)
 
-    files.forEach(function(file) {
+    files.forEach(file => {
 
-      var location = path.resolve(root, file)
+      const location = path.resolve(root, file)
+
       isFolder(location)
           ? self.cache(location)
           : routes.push(location)

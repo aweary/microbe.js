@@ -1,32 +1,30 @@
-var path = require('path')
-var merge = require('merge')
+import path from 'path'
 
-function State() {
+/**
+ * Generate a state object with all the
+ * required state defaults
+ * @class
+ */
+export default class State {
 
-  this.projectRoot = path.resolve('./')
-  this.views = 'views'
-  this.publicFolder = 'public'
-  this.middleware = []
-  this.routeParamters = []
-  this.staticRoutes = []
-  this.staticRouteCache  = {}
-  this.routes = []
-  this.routers = {}
+  constructor() {
+    this.projectRoot = path.resolve('./')
+    this.views = 'views'
+    this.publicFolder = 'public'
+    this.middleware = []
+    this.routeParamters = []
+    this.staticRoutes = []
+    this.staticRouteCache  = {}
+    this.routes = []
+    this.routers = {}
+  }
 
-}
-
-/* Define Getters for the dyanically generated publicPath and viewLocation */
-
-Object.defineProperty(State.prototype, 'publicPath', {
-  get: function() {
+  get publicPath() {
     return path.resolve(this.publicFolder)
   }
-})
 
-Object.defineProperty(State.prototype, 'viewLocation', {
-  get: function() {
+  get viewLocation() {
     return path.resolve(this.views)
   }
-})
 
-module.exports = State
+}

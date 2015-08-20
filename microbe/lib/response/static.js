@@ -1,8 +1,9 @@
-var debug = require('debug')('response:static')
-var path = require('path')
-var mime = require('mime')
-var inArray = require('../../util/helpers').inArray
+import bugger from 'debug'
+import path from 'path'
+import mime from 'mime'
+import { inArray } from '../../util/helpers'
 
+const debug = bugger('response:static')
 
 /**
  * Used to serve static assets to the client. If the File
@@ -12,28 +13,27 @@ var inArray = require('../../util/helpers').inArray
  *
  * When the provided path isn't found in either (which usually
  * happens with dynamic URLs, e.g., route params) it will
- * find the public folder in the URL, create an anchor point
+ * find the pub folder in the URL, create an anchor point
  * and then build path constructs until it finds one that
  * matches a cached path.
  *
  * @param {String} file static file path
  */
 
-module.exports = function(app, send) {
+export default function(app, send) {
 
 
-  return function static(file) {
+  return function serveStatic(file) {
 
-    var exists = true
-    var public = app.state.publicPath
-    var root = app.state.publicFolder
-    var routes = app.state.staticRoutes
-    var cache = app.state.staticRouteCache
+    let exists = true
+    let pub = app.state.publicPath
+    let root = app.state.publicFolder
+    let routes = app.state.staticRoutes
+    let cache = app.state.staticRouteCache
 
-    debug('Public path: %o', public)
-    debug('Static cache: %o', JSON.stringify(cache))
+    debug('pub path: %o', pub)
 
-    var relative = path.join(public, file)
+    let relative = path.join(pub, file)
     debug('Serving static file %o', relative)
 
 
@@ -45,16 +45,16 @@ module.exports = function(app, send) {
 
     debug('Starting static route search')
 
-    var paths = relative.split('/')
-    var idx = paths.indexOf(root)
+    let paths = relative.split('/')
+    let idx = paths.indexOf(root)
 
-    var construct = paths.slice(++idx).join('/')
-    var location = path.join(public, construct)
+    let construct = paths.slice(++idx).join('/')
+    let location = path.join(pub , construct)
 
     while (!inArray(routes, location)) {
 
       construct = paths.slice(++idx).join('/')
-      location = path.join(public, construct)
+      location = path.join(pub, construct)
       if (idx > paths.length) {
         location = false
         break

@@ -1,6 +1,6 @@
-var lib = require('./util/helpers').lib
+import { lib } from './util/helpers'
 
-var proto = module.exports = {}
+const proto = module.exports = {}
 
 proto.cache = lib('proto', 'cache')
 proto.route = lib('proto', 'route')

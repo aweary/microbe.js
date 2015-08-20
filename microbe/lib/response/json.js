@@ -1,4 +1,5 @@
-var debug = require('debug')('response:json')
+import bugger from 'debug'
+const debug = bugger('response:json')
 
 /**
  * Returns a function that parses data into a
@@ -9,7 +10,7 @@ var debug = require('debug')('response:json')
  * @return {Function} response.json handler
  */
 
-module.exports = function(response, done) {
+export default function(response, done) {
 
   return function(json) {
     if (typeof json === 'object') json = JSON.stringify(json)

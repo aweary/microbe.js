@@ -1,50 +1,44 @@
-var paramify = require('./params')
-var debug = require('debug')('handler')
-var fs = require('fs')
-var final = require('finalhandler')
+import paramify from './params'
+import bugger from 'debug'
+import fs from 'fs'
+import final from 'finalhandler'
 
-module.exports = function(request, response, app) {
+const debug = bugger('handler')
 
-  var routers = app.state.routers
-  var done = final(request, response)
-  var stack = app.state.middleware
-  var path   = request.path
-  var type   = request.type
-  var found  = false
-  var matched = false
+export default function(request, response, app) {
 
+  const routers = app.state.routers
+  const done = final(request, response)
+  const stack = app.state.middleware
+  const path   = request.path
+  const type   = request.type
+  const params = app.state.routeParamters
 
-  /* Handle static requests */
+  let matched = false
+
   if (request.staticRequest) {
-    response.static(path)
     debug('Rendering static file: %o', path)
-    return
+    return response.static(path)
   }
 
   debug('Requested view: %o', path)
 
-  Object.keys(routers).forEach(function(route) {
+  Object.keys(routers).forEach((route) => {
 
-    var router = routers[route]
+    const router = routers[route]
+    debug('router.params: %o', router.params)
 
     if (router.matchPath.test(path)) {
 
       matched = true
-
-      var params = router.matchPath.exec(path)
-
-      /* Cache the params if they're not already cached */
-      if (app.state.routeParamters.indexOf(params[0]) === -1) {
-        app.state.routeParamters.push(params[0])
-      }
-
-      paramify(router, request, params)
+      const matches = router.matchPath.exec(path)
+      paramify(request, router.params, matches)
 
 
       if (stack.length) {
         stack.forEach(function(middleware) {
-          var handler = middleware.handler
-          var route = middleware.route
+          const handler = middleware.handler
+          const route = middleware.route
           if (route === path || route === '*') handler(request, response)
         })
 

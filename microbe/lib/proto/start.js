@@ -1,5 +1,7 @@
-var Server = require('../../server.js')
-var debug = require('debug')('app:start')
+import Server from '../../server.js'
+import bugger from 'debug'
+const debug = bugger('app:start')
+
 
 /**
  * Used to start the actual HTTP server for the Microbe app
@@ -7,7 +9,7 @@ var debug = require('debug')('app:start')
  * @param  {Function} callback Callback function once server starts
  */
 
-module.exports = function(port, callback) {
+export default function(port, callback) {
 
   this.cache(this.state.publicPath)
   this.port = port

@@ -1,20 +1,22 @@
-var pathRegEx = require('path-to-regexp')
-var debug = require('debug')('router')
-var state = require('./state')
+import pathRegEx from 'path-to-regexp'
+import bugger from 'debug'
+import state from './state'
 
+const debug = bugger('router')
 
 /**
- * Router
+ * The Microbe Router is a simple object which contains all
+ * the route handlers for a given path. It can be used directly,
+ * or implicitly by using app.route()
+ *
  * @param  {String} path Base URL for the HTTP path
  * @return {Objcet} router Microbe Router object
- * @summary The Microbe Router is a simple object which contains all
- *          the route handlers for a given path. It can be used directly,
- *          or implicitly by using app.route()
  */
-module.exports = function(path) {
+
+export default function(path) {
 
   /* Instantiate the router object */
-  var router = {}
+  let router = {}
 
   /* Use a path matching RegEx for registering the path */
   router.params = []
