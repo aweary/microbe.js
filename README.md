@@ -23,7 +23,7 @@ Below is a basic example with only one route.
 ```js
 
 var microbe = require('microbe.js')
-var app = microbe()
+var app = microbe({engine: 'handlebars'})
 
 app.route('/', function(req, res){
   res.render('index', {title: 'This is the main page!'})
@@ -65,22 +65,47 @@ app.route('/article/:id', function(req, res) {
 ## Rendering
 
 
-Microbe uses handlebars for rendering. Place your views in a `views` folder and use `res.render` to render that view with any variable you'd like.
+Microbe implements `consolidate.js` which means you can use any of the supported engines. [Check their repo](https://github.com/tj/consolidate.js) for a comprehensive list.
+
+You have to set a rendering engine if you're going to be using the `res.render` method, otherwise an error will be thrown.
+
+You can do so when you instantiate the app:
+
+```js
+
+var microbe = require('microbe')
+var app = microbe({
+  engine: 'handlebars'
+})
+
+```
+
+Or you may do so using the `app.set` method:
+
+```js
+var microbe = require('microbe')
+var app = microbe()
+app.set('engine', 'jade')
+```
+
+Microbe will assume that your file extensions will be the same as the engine's name (e.g., `handlebars` uses `[name].handlebars`, `jade` uses `[name].jade`, etc.). If you need to use a different extension then set the `ext` value as well.
+
+```js
+var app = microbe({
+  engine: 'handlebars',
+  ext: 'hbs'
+})
+
+/* or app.set('ext', 'hbs') */
+```
+
+
+`res.render` takes the file name (minus the extension) as the first argument and the data to render as the second/
 
 ```js
   res.render('about', {time: Date.now()})
 ```
 
-Microbe can also render or serve other types of content. For example, you can use the `res.json` method to simple send a JSON object, which makes APIs very easy to implement.
-
-```js
-  app.route('/api/:user', function(req, res) {
-    var user = req.params.user
-    /* query is just a dummy function, meant to represent some actual query you might make to a database or other data store */
-    var details = query(user)
-    res.json(details)
-  })
-```
 
 ## Middlware
 

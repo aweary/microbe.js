@@ -1,5 +1,4 @@
 var lib = require('./util/helpers').lib
-var debug = require('debug')('proto')
 
 var proto = module.exports = {}
 
