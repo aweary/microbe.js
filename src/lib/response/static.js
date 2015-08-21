@@ -38,8 +38,7 @@ export default function serveStatic(file) {
 
     if (inArray(routes, relative)) {
       debug('Writing from source: %o', relative)
-      send(relative)
-      return
+      return this.send(relative)
     }
 
     debug('Starting static route search')
@@ -63,12 +62,8 @@ export default function serveStatic(file) {
 
     debug('Finished static route search')
 
-    if (!location) return send(null, new Error('File not found!'))
-
-    return this.send(location)
+    return location
+        ? this.send(location)
+        : this.send(null, new Error('File not found!'))
 
   }
-
-
-
-}

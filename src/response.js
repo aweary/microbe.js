@@ -11,8 +11,8 @@ const debug = bugger('response')
 export default {
 
   _check: 'This is render',
-  render: lib('response', 'render')
-  // static: lib('response', 'static')(send),
+  render: lib('response', 'render'),
+  static: lib('response', 'static')
   // json: lib('response', 'json')(this.res, done)
 
 }

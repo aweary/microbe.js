@@ -24,7 +24,7 @@ export default function(duplex) {
   let regex = ''
 
   if (duplex.asset) {
-    debug('Static asset requested!')
+    return duplex.static(path)
   }
 
   debug('Requested view: %o', path)
