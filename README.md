@@ -22,20 +22,30 @@ Below is a basic example with only one route.
 var microbe = require('microbe.js')
 var app = microbe({engine: 'handlebars'})
 
-app.route('/', function(req, res){
-  res.render('index', {title: 'This is the main page!'})
+app.route('/', function(duplex){
+  duplex.render('index', {title: 'This is the main page!'})
 })
+
+Unlike a vanilla Node server the callback function only takes
+one argument, `duplex`.
+
+`duplex` provides an access point for all request and response
+methods/accessors you'd need to use. For example, you can get the request method at `duplex.method` and you can render a response
+with `duplex.render`.
+
+`duplex` simplifies the API and makes sure that the ServerResponse and ClientRequest objects aren't manipulated
+directly.
 
 ```
 
 ## Routing
 
-Routing is verstaile and can be accomplished in a number of different ways. If you want to handle a basic route with just a GET request handler, you can invoke `app.route` with the path and handler
+Routing is versatile and can be accomplished in a number of different ways. If you want to handle a basic route with just a GET request handler, you can invoke `app.route` with the path and handler
 
 ```js
 
-  app.route('/', function(req, res){
-    res.render('index')
+  app.route('/', function(duplex){
+    duplex.render('index')
    })
 
 ```
@@ -46,16 +56,17 @@ You can also use chaining to attach different HTTP request handlers for a route.
 ```js
 
   app.route('/api')
-     .get(function(req, res) { /* Handle POST request as you like */ })
-     .post(function(req, res){ /* Handle POST request as you like */ })
+     .get(function(duplex) { /* Handle POST request as you like */ })
+     .post(function(duplex){ /* Handle POST request as you like */ })
 
 ```
 
 Route parameters are also available on the `req` object via `req.params`.
 
 ```js
-app.route('/article/:id', function(req, res) {
-   res.render('article', { articleID: req.params.id })
+app.route('/article/:id', function(duplex) {
+  id = duplex.params.id
+  duplex.render('article', { articleID: id })
 })
 ```
 
@@ -110,7 +121,7 @@ Middleware is added to a route using the `app.use` method. The first argument is
 
 ```js
 
-  app.use('/api', function(req, res){
+  app.use('/api', function(duplex){
     console.log('API request has been received!')
   })
 
