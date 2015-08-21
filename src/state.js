@@ -16,7 +16,7 @@ export default class State {
     this.staticRoutes = []
     this.staticRouteCache  = {}
     this.routes = []
-    this.routers = {}
+    this.routers = []
   }
 
   get publicPath() {

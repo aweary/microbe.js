@@ -10,31 +10,34 @@ const debug = bugger('app:route')
  * @summary used to set the routes for the Microbe proto
  */
 
-export default function(path, router) {
+export default function(path, handler) {
 
-  /* Cache the path no matter what */
+  let routers = this.state.routers
   this.state.routes.push(path)
+
   debug('Registering route %o', path)
 
-  /* If a function is passed, treat it as a basic GET route */
-  if (typeof router === 'function') {
+  switch (typeof handler) {
 
-    let routeObject = Router(path).get(router)
-    this.state.routers[path] = routeObject
-    return true
+    case 'function':
+      debug('Registered function for %o', path)
+      let router = Router(path, handler, 'GET')
+      routers.push(router)
+      return
+
+    case 'object':
+      handler.path = path
+      routers.push(handler)
+      return
+
+    case 'undefined':
+      routers.push(Router(path))
+      return router
+
+    default:
+    /* noop */
+
   }
 
-  /* If an object is passed, assume it is a Router object */
-  else if (typeof router === 'object') {
-    this.state.routers[path] = router
-    return true
-  }
-
-  /* If no route handler is passed, assume the user wants to chain routes*/
-  else if (!router) {
-    let routeObject = Router(path)
-    this.state.routers[path] = routeObject
-    return routeObject
-  }
 
 }

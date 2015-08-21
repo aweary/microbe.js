@@ -20,16 +20,15 @@ const debug = bugger('response:static')
  * @param {String} file static file path
  */
 
-export default function(app, send) {
 
 
-  return function serveStatic(file) {
+export default function serveStatic(file) {
 
     let exists = true
-    let pub = app.state.publicPath
-    let root = app.state.publicFolder
-    let routes = app.state.staticRoutes
-    let cache = app.state.staticRouteCache
+    let pub = this.publicPath
+    let root = this.publicFolder
+    let routes = this.staticRoutes
+    let cache = this.staticRouteCache
 
     debug('pub path: %o', pub)
 
@@ -66,7 +65,7 @@ export default function(app, send) {
 
     if (!location) return send(null, new Error('File not found!'))
 
-    return send(location)
+    return this.send(location)
 
   }
 
