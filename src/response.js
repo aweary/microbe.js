@@ -7,13 +7,23 @@ import { serve, lib } from './util/helpers'
 
 const debug = bugger('response')
 
-export default function(request, response, app) {
 
-  const done = final(request, response)
-  const send = serve(response, done)
+export default {
 
-  response.render = lib('response', 'render')(app, send)
-  response.static = lib('response', 'static')(app, send)
-  response.json = lib('response', 'json')(response, done)
+  _check: 'This is render',
+  render: lib('response', 'render')
+  // static: lib('response', 'static')(send),
+  // json: lib('response', 'json')(this.res, done)
 
 }
+//
+// export default function(request, response, app) {
+//
+//   const done = final(request, response)
+//   const send = serve(response, done)
+//
+//   response.render = lib('response', 'render')(app, send)
+//   response.static = lib('response', 'static')(app, send)
+//   response.json = lib('response', 'json')(response, done)
+//
+// }

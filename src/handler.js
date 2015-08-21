@@ -5,20 +5,20 @@ import final from 'finalhandler'
 
 const debug = bugger('handler')
 
-export default function(request, response, app) {
+export default function(duplex) {
 
-  const routers = app.state.routers
-  const done = final(request, response)
-  const stack = app.state.middleware
-  const path   = request.path
-  const type   = request.type
-  const params = app.state.routeParamters
+  const routers = duplex.routers
+  const done = final(duplex.req, duplex.res)
+  const stack = duplex.middleware
+  const path   = duplex.path
+  const method   = duplex.method.toLowerCase()
+  const params = duplex.routeParamters
 
   let matched = false
 
-  if (request.staticRequest) {
+  if (duplex.asset) {
     debug('Rendering static file: %o', path)
-    return response.static(path)
+    // return duplex.static()
   }
 
   debug('Requested view: %o', path)
@@ -32,19 +32,20 @@ export default function(request, response, app) {
 
       matched = true
       const matches = router.matchPath.exec(path)
-      paramify(request, router.params, matches)
+      // paramify(request, router.params, matches)
 
 
       if (stack.length) {
         stack.forEach(function(middleware) {
           const handler = middleware.handler
           const route = middleware.route
-          if (route === path || route === '*') handler(request, response)
+          if (route === path || route === '*') handler(duplex)
         })
 
       }
+      debug('Handler: %o, method: %o', router.handlers, method)
       /* Handle the actual request now */
-      router.handlers[type](request, response)
+      router.handlers[method](duplex)
       return true
     }
 

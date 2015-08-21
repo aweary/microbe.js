@@ -2,7 +2,7 @@ import bugger from 'debug'
 import fs from 'fs'
 import path from 'path'
 import error from '../../util/error'
-import { isFolder } from '../../util.helpers'
+import { isFolder } from '../../util/helpers'
 
 const debug = bugger('app:cache')
 

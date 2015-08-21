@@ -22,16 +22,28 @@ var _handler = require('./handler');
 
 var _handler2 = _interopRequireDefault(_handler);
 
+var _debug = require('debug');
+
+var _debug2 = _interopRequireDefault(_debug);
+
 exports['default'] = function (port, app) {
 
-  return _http2['default'].createServer(function (request, response) {
+  var debug = (0, _debug2['default'])('app:server');
+  debug('Starting app with port %o', port);
 
-    /* Augment response object for view rendering */
-    (0, _response2['default'])(request, response, app);
-    /* Augument request object for route handling */
-    (0, _request2['default'])(request, response, app);
-    /* Pass off request and response for route handling */
-    (0, _handler2['default'])(request, response, app);
+  return _http2['default'].createServer(function (req, res) {
+
+    var ctx = {};
+    ctx.request = Object.create(_request2['default']);
+    ctx.request.req = req;
+    debug('Request object created: %o', [ctx.request.url, ctx.request.query, ctx.request.asset]);
+    res.end('404');
+
+    // /* Augment response object for view rendering */
+    // responsify(request, response, app)
+    //
+    // /* Pass off request and response for route handling */
+    // handler(request, response, app)
   });
 };
 

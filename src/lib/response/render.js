@@ -13,25 +13,23 @@ const debug = bugger('response:render')
  */
 
 
-export default function(app, send) {
 
-  return function(view, data) {
+  export default function(view, data)  {
 
     debug('Rendering view %o', view)
-    let engine = app.state.engine
-    let ext = app.state.ext || engine
+    let engine = this.engine
+    let ext = this.ext || engine
 
     if (engine === undefined) err('engine')
     debug('Render %o with ext %o', engine, ext)
 
-    let root = app.state.viewLocation
+    let root = this.viewLocation
+    debug('viewLocation: ', this.viewLocation)
     let file = `${view}.${ext}`
     let location = path.resolve(root, file)
     debug('Serving %o', location)
 
     cons[engine](location, data, (err, html) => {
-      send(html, null, false)
+      this.send(html, null, false)
     })
   }
-
-}

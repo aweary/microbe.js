@@ -51,8 +51,6 @@ exports['default'] = function (request, response, app) {
 
       matched = true;
       var matches = router.matchPath.exec(path);
-      debug('!!!!Params: %o, matches: %o', router.params, matches);
-
       (0, _params2['default'])(request, router.params, matches);
 
       if (stack.length) {
