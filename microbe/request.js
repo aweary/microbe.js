@@ -6,7 +6,6 @@ const debug = bugger('request')
 export default function(request, response, app) {
 
   debug('requested url: %o', request.url)
-  console.log('This is the cleanest shit ever, yo')
 
   const staticMatch = /\.(css|js|png|gif|txt|ico|xml|rss|jpeg|jpg|svg|pdf)$/
   request.path = url.parse(request.url).pathname
