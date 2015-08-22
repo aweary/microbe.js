@@ -25,6 +25,7 @@ var app = microbe({engine: 'handlebars'})
 app.route('/', function(duplex){
   duplex.render('index', {title: 'This is the main page!'})
 })
+```
 
 Unlike a vanilla Node server the callback function only takes
 one argument, `duplex`.
@@ -36,7 +37,6 @@ with `duplex.render`.
 `duplex` simplifies the API and makes sure that the ServerResponse and ClientRequest objects aren't manipulated
 directly.
 
-```
 
 ## Routing
 
