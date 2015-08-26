@@ -16,7 +16,7 @@ const debug = bugger('request')
 
 export default {
 
-  _params: [],
+  _params: {},
 
   get headers() {
     return this.req.headers
@@ -60,7 +60,11 @@ export default {
   },
 
   get params() {
-    return this._params || []
+    return this._params || {}
+  },
+
+  set params(val) {
+    this._params = val
   }
 
 

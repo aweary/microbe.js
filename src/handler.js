@@ -33,7 +33,10 @@ export default function(duplex) {
     router = routers[id++]
     regex = router.match
     matched = !!regex.test(path) && router.method === method
+    if (router.params.length) duplex.params = paramify(duplex, router)
   }
+
+
 
   return matched
       ? router.handler(duplex)

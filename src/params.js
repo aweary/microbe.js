@@ -2,15 +2,21 @@ import bugger from 'debug'
 
 const debug = bugger('params')
 
-export default function(request, params, matches) {
+export default function(duplex, router) {
 
-  request.params = {}
-  const values = Object.keys(matches).map(key => matches[key]).slice(1, -2)
-  debug('Values %o', values)
-
-  params.forEach((param, index) => {
-    let name = param.name
-    request.params[name] = values[index]
+  const result = {}
+  const matches = router.match
+  const keys = Object.keys(matches.keys).map(match => {
+    return matches.keys[match].name
   })
+  const params = matches.exec(duplex.path).slice(1)
+
+  if (params.length !== keys.length) {
+    throw new Error('Route parameter length mismatch')
+  }
+
+  keys.forEach((key, i) => result[key] = params[i] )
+
+  return result
 
 }
