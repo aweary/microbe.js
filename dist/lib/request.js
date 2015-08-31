@@ -18,6 +18,10 @@ var _parseurl = require('parseurl');
 
 var _parseurl2 = _interopRequireDefault(_parseurl);
 
+var _queryString = require('query-string');
+
+var _queryString2 = _interopRequireDefault(_queryString);
+
 var debug = (0, _debug2['default'])('request');
 
 /**
@@ -28,7 +32,11 @@ var debug = (0, _debug2['default'])('request');
  *
  */
 
-exports['default'] = Object.defineProperties({}, {
+exports['default'] = Object.defineProperties({
+
+  _params: {}
+
+}, {
   headers: {
     get: function get() {
       return this.req.headers;
@@ -64,9 +72,16 @@ exports['default'] = Object.defineProperties({}, {
     configurable: true,
     enumerable: true
   },
-  query: {
+  querystring: {
     get: function get() {
       return (0, _parseurl2['default'])(this.req).query || '';
+    },
+    configurable: true,
+    enumerable: true
+  },
+  query: {
+    get: function get() {
+      return _queryString2['default'].parse(this.querystring);
     },
     configurable: true,
     enumerable: true
@@ -95,7 +110,10 @@ exports['default'] = Object.defineProperties({}, {
   },
   params: {
     get: function get() {
-      return this.params || [];
+      return this._params || {};
+    },
+    set: function set(val) {
+      this._params = val;
     },
     configurable: true,
     enumerable: true
