@@ -51,10 +51,14 @@ directly, so if you feel you need to access those objects directly, open an issu
 
 ## Routing
 
-Routing is accomplished using the `app.route` method which accepts an objects
-used to build the route. The three required properties are `path`, `method`, and `handler`, like so:
+Routing is accomplished using the `app.route` method which accepts an objects used to build the route, or using convenience
+methods as described below.
 
-Route parameters are also available on the `req` object via `req.params`.
+
+`app.route` lets you declare your routes in a very direct
+way by explicitly providing the `path`, `method`, and `handler`
+options.
+
 
 ```js
 app.route({
@@ -65,6 +69,15 @@ app.route({
     duplex.static(`/documents/${document}`)
   }
 })
+```
+
+Route parameters are also available on the `req` object via `req.params`.
+
+Microbe.js also provides standard convenience methods such as `app.get` and `app.post`
+
+```js
+let details = getSomeDetailObject()
+app.get('/', duplex => duplex.json({ details }))
 ```
 
 ## Rendering
