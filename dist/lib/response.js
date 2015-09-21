@@ -82,13 +82,17 @@ exports['default'] = {
   'static': function _static() {
 
     var app = this.app;
-    var exists = true;
-    var file = this.path;
     var pub = app.get('publicPath');
     var root = app.get('publicFolde');
+
+    if (pub === undefined) {
+      return this.send(null, new Error('File not found!'));
+    }
+
+    var exists = true;
+    var file = this.path;
     var cache = app.caches.assets;
     debug('Asset cache: %o', cache);
-
     debug('pub path: %o', pub);
 
     var relative = _path2['default'].join(pub, file);
@@ -107,7 +111,7 @@ exports['default'] = {
     var construct = paths.slice(++idx).join('/');
     var location = _path2['default'].join(pub, construct);
 
-    while (!(0, _utilHelpers.inArray)(routes, location)) {
+    while (!(0, _utilHelpers.inArray)(cache, location)) {
 
       construct = paths.slice(++idx).join('/');
       location = _path2['default'].join(pub, construct);
@@ -134,8 +138,8 @@ exports['default'] = {
   json: function json(_json) {
     if (typeof _json === 'object') _json = JSON.stringify(_json);
     debug('Sending JSON data: %o', _json);
-    response.setHeader('Content-Type', 'application/json');
-    response.end(_json);
+    this.res.setHeader('Content-Type', 'application/json');
+    this.res.end(_json);
   }
 
 };

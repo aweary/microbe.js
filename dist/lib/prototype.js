@@ -70,15 +70,10 @@ Object.setPrototypeOf(proto, _events.EventEmitter.prototype);
 proto.kickoff = function kickoff(root) {
 
   var root = _path2['default'].resolve(root);
-  console.log('ROOT', root);
   this.set('routeParamters', []);
   this.set('staticRoutes', []);
   this.set('routes', []);
   this.set('projectRoot', root);
-  this.set('views', 'views');
-  this.set('publicFolder', 'public');
-  this.set('publicPath', _path2['default'].resolve(root, 'public'));
-  this.set('viewLocation', _path2['default'].resolve(root, 'views'));
   this.emit('kickoff');
 };
 
@@ -158,7 +153,7 @@ proto.route = function route(options) {
   var handler = options.handler;
 
   var router = this.router;
-  router[method](path, handler);
+  router[method.toLowerCase()](path, handler);
   this.emit('route', { path: path, method: method, handler: handler });
 };
 
@@ -172,8 +167,7 @@ proto.start = function start(port, callback) {
 
   var cb = callback || function () {};
   var pub = this.get('publicPath');
-  console.log(pub);
-  this.cache(pub);
+  if (pub) this.cache(pub);
   this.set('port', port);
   this.server = (0, _server2['default'])(port, this);
   this.server.listen(port, cb);

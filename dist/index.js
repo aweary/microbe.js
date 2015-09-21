@@ -11,8 +11,8 @@ var _libPrototype = require('./lib/prototype');
 
 var _libPrototype2 = _interopRequireDefault(_libPrototype);
 
-function microbe(opts) {
-  return new _libPrototype2['default'](opts);
+function microbe(root) {
+  return new _libPrototype2['default'](root);
 }
 
 module.exports = exports['default'];
