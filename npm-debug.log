@@ -1,0 +1,52 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@2.14.4
+3 info using node@v4.1.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/brandon.dail/Development/microbe',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/brandon.dail/.npm/microbe.js/0.1.13/package.tgz not in flight; packing
+9 verbose tar pack [ '/Users/brandon.dail/.npm/microbe.js/0.1.13/package.tgz',
+9 verbose tar pack   '/Users/brandon.dail/Development/microbe' ]
+10 verbose tarball /Users/brandon.dail/.npm/microbe.js/0.1.13/package.tgz
+11 verbose folder /Users/brandon.dail/Development/microbe
+12 info prepublish microbe.js@0.1.13
+13 verbose unsafe-perm in lifecycle true
+14 info microbe.js@0.1.13 Failed to exec prepublish script
+15 error addLocalDirectory Could not pack /Users/brandon.dail/Development/microbe to /Users/brandon.dail/.npm/microbe.js/0.1.13/package.tgz
+16 error addLocal Could not install /Users/brandon.dail/Development/microbe
+17 verbose stack Error: microbe.js@0.1.13 prepublish: `num run build`
+17 verbose stack spawn ENOENT
+17 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:17:16)
+17 verbose stack     at emitTwo (events.js:87:13)
+17 verbose stack     at ChildProcess.emit (events.js:172:7)
+17 verbose stack     at maybeClose (internal/child_process.js:817:16)
+17 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+18 verbose pkgid microbe.js@0.1.13
+19 verbose cwd /Users/brandon.dail/Development/microbe
+20 error Darwin 15.0.0
+21 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+22 error node v4.1.1
+23 error npm  v2.14.4
+24 error file sh
+25 error code ELIFECYCLE
+26 error errno ENOENT
+27 error syscall spawn
+28 error microbe.js@0.1.13 prepublish: `num run build`
+28 error spawn ENOENT
+29 error Failed at the microbe.js@0.1.13 prepublish script 'num run build'.
+29 error This is most likely a problem with the microbe.js package,
+29 error not with npm itself.
+29 error Tell the author that this fails on your system:
+29 error     num run build
+29 error You can get their info via:
+29 error     npm owner ls microbe.js
+29 error There is likely additional logging output above.
+30 verbose exit [ 1, true ]
