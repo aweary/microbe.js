@@ -45,15 +45,15 @@ exports['default'] = {
     var _this = this;
 
     var app = this.app;
-    var engine = app.get('engine');
-    var ext = app.get('ext') || engine;
+    var engine = app.query('engine');
+    var ext = app.query('ext') || engine;
 
     debug('Rendering view %o', view);
 
     if (engine === undefined) err('engine');
     debug('Render %o with ext %o', engine, ext);
 
-    var root = app.get('viewLocation');
+    var root = app.query('viewLocation');
     debug('viewLocation: ', root);
     var file = view + '.' + ext;
     var location = _path2['default'].resolve(root, file);
@@ -79,18 +79,18 @@ exports['default'] = {
    * @param {String} file static file path
    */
 
-  'static': function _static() {
+  'static': function _static(filePath) {
 
     var app = this.app;
-    var pub = app.get('publicPath');
-    var root = app.get('publicFolde');
+    var pub = app.query('publicPath');
+    var root = app.query('publicFolde');
 
-    if (pub === undefined) {
+    if (pub === undefined && !filePath) {
       return this.send(null, new Error('File not found!'));
     }
 
     var exists = true;
-    var file = this.path;
+    var file = filePath || this.path;
     var cache = app.caches.assets;
     debug('Asset cache: %o', cache);
     debug('pub path: %o', pub);

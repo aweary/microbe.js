@@ -85,7 +85,7 @@ proto.kickoff = function kickoff(root) {
  * @example
  */
 
-proto.get = function get(key) {
+proto.query = function query(key) {
   return this.settings[key];
 };
 
@@ -155,6 +155,12 @@ proto.route = function route(options) {
   var router = this.router;
   router[method.toLowerCase()](path, handler);
   this.emit('route', { path: path, method: method, handler: handler });
+};
+
+proto.get = function getRoute(path, handler) {
+  var method = 'GET';
+  var options = { path: path, method: method, handler: handler };
+  this.route(options);
 };
 
 /**
