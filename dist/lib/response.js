@@ -83,7 +83,7 @@ exports['default'] = {
 
     var app = this.app;
     var pub = app.query('publicPath');
-    var root = app.query('publicFolde');
+    var root = app.query('publicFolder');
 
     if (pub === undefined && !filePath) {
       return this.send(null, new Error('File not found!'));
