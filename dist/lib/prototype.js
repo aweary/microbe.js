@@ -68,14 +68,12 @@ Object.setPrototypeOf(proto, _events.EventEmitter.prototype);
  */
 
 proto.kickoff = function kickoff(root) {
-
   var root = _path2['default'].resolve(root);
   this.set('routeParamters', []);
   this.set('staticRoutes', []);
   this.set('routes', []);
   this.set('projectRoot', root);
   this.emit('kickoff');
-
   debug('App settings: %o', this.settings);
 };
 

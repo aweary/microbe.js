@@ -106,7 +106,6 @@ exports['default'] = {
 
     if ((0, _utilHelpers.inArray)(cache, relative)) {
       debug('Writing from source: %o', relative);
-      console.log(this);
       return _fs2['default'].createReadStream(relative).pipe(this.res);
     }
 
@@ -123,8 +122,6 @@ exports['default'] = {
 
       construct = paths.slice(++idx).join('/');
       location = _path2['default'].join(pub, construct);
-      debug('construct: %o', construct);
-      debug('location: %o', location);
       if (idx > paths.length) {
         location = false;
         break;
@@ -133,7 +130,7 @@ exports['default'] = {
 
     debug('Finished static route search: %o', location);
 
-    return location ? _fs2['default'].createReadStream(location).pipe(this) : this.send(null, new Error('File not found!'));
+    return location ? _fs2['default'].createReadStream(location).pipe(this.res) : this.send(null, new Error('File not found!'));
   },
 
   /**
