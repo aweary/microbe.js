@@ -6,6 +6,10 @@ Object.defineProperty(exports, '__esModule', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
 var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
@@ -82,8 +86,10 @@ exports['default'] = {
   'static': function _static(filePath) {
 
     var app = this.app;
-    var pub = app.query('publicPath');
-    var root = app.query('publicFolder');
+    var folder = app.query('publicFolder');
+    var root = app.query('projectRoot');
+
+    var pub = _path2['default'].resolve(root, folder);
 
     if (pub === undefined && !filePath) {
       return this.send(null, new Error('File not found!'));
@@ -100,7 +106,8 @@ exports['default'] = {
 
     if ((0, _utilHelpers.inArray)(cache, relative)) {
       debug('Writing from source: %o', relative);
-      return this.send(relative);
+      console.log(this);
+      return _fs2['default'].createReadStream(relative).pipe(this.res);
     }
 
     debug('Starting static route search');
@@ -110,20 +117,23 @@ exports['default'] = {
 
     var construct = paths.slice(++idx).join('/');
     var location = _path2['default'].join(pub, construct);
+    debug('Static cache: %o', cache);
 
     while (!(0, _utilHelpers.inArray)(cache, location)) {
 
       construct = paths.slice(++idx).join('/');
       location = _path2['default'].join(pub, construct);
+      debug('construct: %o', construct);
+      debug('location: %o', location);
       if (idx > paths.length) {
         location = false;
         break;
       }
     }
 
-    debug('Finished static route search');
+    debug('Finished static route search: %o', location);
 
-    return location ? this.send(location) : this.send(null, new Error('File not found!'));
+    return location ? _fs2['default'].createReadStream(location).pipe(this) : this.send(null, new Error('File not found!'));
   },
 
   /**

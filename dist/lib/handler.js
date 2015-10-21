@@ -39,15 +39,18 @@ function handler(duplex, _router) {
   var done = (0, _finalhandler2['default'])(duplex.req, duplex.res);
   var path = duplex.path;
 
+  debug('Is the duplex an asset? %o', duplex.asset);
   if (duplex.asset) return duplex['static']();
 
   var router = _router._router;
   var method = duplex.method.toLowerCase();
   var match = router.match(path);
+  debug('Results: %o', match);
 
   if (!match) return done(false);
 
   var handlers = match.node[method];
+  debug('Handlers: %o', handlers);
   duplex.params = match.param;
 
   handlers.forEach(function (handler) {

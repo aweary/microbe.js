@@ -75,6 +75,8 @@ proto.kickoff = function kickoff(root) {
   this.set('routes', []);
   this.set('projectRoot', root);
   this.emit('kickoff');
+
+  debug('App settings: %o', this.settings);
 };
 
 /**
@@ -96,8 +98,9 @@ proto.query = function query(key) {
  */
 
 proto.set = function set(setting, value) {
-
+  debug('Setting key %o to value %o', setting, value);
   arguments.length === 1 ? (0, _mergeDescriptors2['default'])(this.settings, setting) : this.settings[setting] = value;
+  debug('Updated settings object: %o', this.settings);
   return this;
 };
 
@@ -119,10 +122,15 @@ proto.toJSON = function inspect() {
  * @param  {String} root path to recursively search in
  */
 
-proto.cache = function cache(root) {
+proto.cache = function cache(folder) {
 
   var self = this;
-  var cached = this.caches.assets = [];
+  var cached = this.caches.assets;
+  if (!cached) {
+    cached = this.caches.assets = [];
+  }
+  var parent = this.query('projectRoot');
+  var root = _path2['default'].resolve(parent, folder);
 
   debug('Caching static paths for %o', root);
 
@@ -134,6 +142,7 @@ proto.cache = function cache(root) {
 
       var location = _path2['default'].resolve(root, file);
       debug('Static path: %o', location);
+      debug('Is it a folder? %o', (0, _utilHelpers.isFolder)(location));
 
       (0, _utilHelpers.isFolder)(location) ? self.cache(location) : cached.push(location);
     });
@@ -172,7 +181,8 @@ proto.get = function getRoute(path, handler) {
 proto.start = function start(port, callback) {
 
   var cb = callback || function () {};
-  var pub = this.get('publicPath');
+  var pub = this.query('publicFolder');
+  debug('App:start publicPath: %o', pub);
   if (pub) this.cache(pub);
   this.set('port', port);
   this.server = (0, _server2['default'])(port, this);
