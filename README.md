@@ -43,7 +43,7 @@ one argument, `duplex`.
 
 `duplex` provides an access point for all request and response
 methods/accessors you'd need to use. For example, you can get the request method at `duplex.method` and you can render a response
-with `duplex.render`. You can also access the full request and response objects on `duplex.req` and `duplex.res` respectively/
+with `duplex.render`. You can also access the full request and response objects on `duplex.req` and `duplex.res` respectively.
 
 `duplex` simplifies the API and makes sure that the `ServerResponse` and `ClientRequest` objects aren't manipulated
 directly, so if you feel you need to access those objects directly, open an issue and we can get a better API setup.
@@ -51,7 +51,7 @@ directly, so if you feel you need to access those objects directly, open an issu
 
 ## Routing
 
-Routing is accomplished using the `app.route` method which accepts an objects used to build the route, or using convenience
+Routing is accomplished using the `app.route` method which accepts an object used to build the route, or using convenience
 methods as described below.
 
 
@@ -122,7 +122,7 @@ Middleware is added to a route using the `app.use` method. The first argument is
 ```
 
 ## Events
-The `app` object does inherit from `EventEmitter` meaning it can `emit` events and also listen for events. Currently there are a limited number of internal events, but you may attach a listener to any of them:
+The `app` object does inherit from `EventEmitter`, meaning it can `emit` events and also listen for events. Currently there are a limited number of internal events, but you may attach a listener to any of them:
 
 `kickoff` is emitted when the app is being initialized/bootstrapped
 
@@ -132,7 +132,7 @@ The `app` object does inherit from `EventEmitter` meaning it can `emit` events a
 
 ## State and configurations
 
-If you need to configure your `Microbe.js` application, you can use the `app.set` method for adjusting values in the internal state object. Currently, the only two properties you should really be setting yourself are the 'views' nad 'publicFolder' which, as expected, determine where `Microbe.js` will look for your views and static files, respectively.
+If you need to configure your `Microbe.js` application, use the `app.set` method for adjusting values in the internal state object. Currently, the only two properties you should really be setting yourself are the 'views' nad 'publicFolder' which, as expected, determines where `Microbe.js` will look for your views and static files, respectively.
 
 ```js
   /* this defaults to 'views' */
